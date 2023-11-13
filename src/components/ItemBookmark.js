@@ -1,4 +1,5 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Add,Clock, Message} from 'iconsax-react-native';
 import FastImage from 'react-native-fast-image';
@@ -13,8 +14,9 @@ const truncateTextByWords = (text, maxWords) => {
 }
 
 const ItemBookmark = ({item, onPress, variant}) => {
+  const navigation = useNavigation();
   return (
-      <TouchableOpacity style={styles.cardItem} onPress={()=>{}}>
+      <TouchableOpacity style={styles.cardItem} onPress={()=>navigation.navigate('BlogDetail', {blogId: item.id})}>
         <FastImage
           style={styles.cardImage}
           source={{

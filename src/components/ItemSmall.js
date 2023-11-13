@@ -1,17 +1,20 @@
-import {StyleSheet, Text, View} from 'react-native';
+
 import FastImage from 'react-native-fast-image';
-import {Receipt21, Clock, Message} from 'iconsax-react-native';
+import { Receipt21, Clock, Message } from 'iconsax-react-native';
 import React from 'react';
 import { fontType, colors } from '../theme';
+import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 
-const ItemSmall = ({item}) => {
+const ItemSmall = ({ item }) => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.cardItem}>
+    <TouchableOpacity style={styles.cardItem} onPress={() => navigation.navigate('BlogDetail', { blogId: item.id })}>
       <FastImage
         style={styles.cardImage}
         source={{
           uri: item.image,
-          headers: {Authorization: 'someAuthToken'},
+          headers: { Authorization: 'someAuthToken' },
           priority: FastImage.priority.high,
         }}
         resizeMode={FastImage.resizeMode.cover}
@@ -20,9 +23,9 @@ const ItemSmall = ({item}) => {
         <View
           style={{
             flexDirection: 'row',
-            gap:30
+            gap: 30
           }}>
-          <View style={{gap: 5, flex:1}}>
+          <View style={{ gap: 5, flex: 1 }}>
             <Text style={styles.cardCategory}>{item.category}</Text>
             <Text style={styles.cardTitle}>{item.title}</Text>
           </View>
@@ -43,7 +46,7 @@ const ItemSmall = ({item}) => {
           <Text style={styles.cardText}>{item.totalComments}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
