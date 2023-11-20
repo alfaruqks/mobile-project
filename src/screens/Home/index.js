@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>WOCO.</Text>
+        <Text style={styles.title}>NulisKuy.</Text>
         <Element3 color={colors.black()} variant="Linear" size={24} />
       </View>
       <View style={styles.listCategory}>
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white(),
   },
   header: {
+    backgroundColor: colors.green(),
     paddingHorizontal: 24,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
     color: colors.black(),
   },
   listCategory: {
+    backgroundColor: colors.green(),
     paddingVertical: 10,
   },
   listBlog: {
@@ -91,11 +93,10 @@ const styles = StyleSheet.create({
 });
 const category = StyleSheet.create({
   item: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 25,
-    alignItems: 'center',
-    backgroundColor: colors.grey(0.08),
+    
+    paddingHorizontal: 30,
+    paddingVertical: 12,
+    alignItems:'center',
   },
   title: {
     fontFamily: fontType['Pjs-SemiBold'],

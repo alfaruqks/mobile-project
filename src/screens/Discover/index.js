@@ -1,17 +1,17 @@
-import {StyleSheet, Text, View, ScrollView, FlatList} from 'react-native';
-import React from 'react';
-import {BlogList} from '../../../data';
-import {ItemSmall} from '../../components'; 
-import {SearchNormal1} from 'iconsax-react-native';
+import { StyleSheet, Text, View, ScrollView, FlatList, Animated } from 'react-native';
+import React, { useRef } from 'react';
+import { BlogList } from '../../../data';
+import { ItemSmall } from '../../components';
+import { SearchNormal1 } from 'iconsax-react-native';
 import { fontType, colors } from '../../theme';
 
 const data = [
-  {id: 1, label: 'Populer'},
-  {id: 2, label: 'Latest'},
-  {id: 3, label: 'Upcomming'},
+  { id: 1, label: 'Populer' },
+  { id: 2, label: 'Latest' },
+  { id: 3, label: 'Upcomming' },
 ];
 
-const ItemRecent = ({item}) => {
+const ItemRecent = ({ item }) => {
   return (
     <View style={recent.button}>
       <Text style={recent.label}>{item.label}</Text>
@@ -19,23 +19,32 @@ const ItemRecent = ({item}) => {
   );
 };
 const FlatListRecent = () => {
-  const renderItem = ({item}) => {
+  const renderItem = ({ item }) => {
     return <ItemRecent item={item} />;
   };
   return (
     <FlatList
       data={data}
       keyExtractor={item => item.id}
-      renderItem={item => renderItem({...item})}
-      ItemSeparatorComponent={() => <View style={{width: 10}} />}
-      contentContainerStyle={{paddingHorizontal: 24, paddingVertical: 10}}
+      renderItem={item => renderItem({ ...item })}
+      ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+      contentContainerStyle={{ paddingHorizontal: 24, paddingVertical: 10 }}
       horizontal
       showsHorizontalScrollIndicator={false}
     />
   );
 };
+
+
 const Discover = () => {
-  const recentBlog = BlogList.slice(5);
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const diffClampY = Animated.diffClamp(scrollY, 0, 142);
+  const recentY = diffClampY.interpolate({
+    inputRange: [0, 142],
+    outputRange: [0, -142],
+    extrapolate: 'clamp',
+  });
+const recentBlog = BlogList.slice(5);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -44,17 +53,23 @@ const Discover = () => {
           <Text style={styles.placeholder}>Search</Text>
         </View>
       </View>
-      <View>
+      <Animated.View style={[recent.container, { transform: [{ translateY: recentY }] }]}>
         <Text style={recent.text}>Recent Search</Text>
         <FlatListRecent />
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      </Animated.View>
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true },
+        )}
+        contentContainerStyle={{ paddingTop: 142 }}>
         <View style={styles.listCard}>
           {recentBlog.map((item, index) => (
             <ItemSmall item={item} key={index} />
           ))}
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 };
@@ -62,49 +77,47 @@ export default Discover;
 const styles = StyleSheet.create({
   listCard: {
     paddingHorizontal: 24,
-    paddingBottom: 20,
+    paddingBottom: 10,
     gap: 10,
   },
   container: {
     flex: 1,
     backgroundColor: colors.white(),
-    
   },
-header: {
+  header: {
     paddingHorizontal: 24,
-    backgroundColor: colors.green(),
-    gap: 30,
     flexDirection: 'row',
     alignItems: 'center',
     height: 52,
-    elevation: 8,
     paddingTop: 8,
     paddingBottom: 4,
+    position: 'absolute',
+    top: 0,
+    zIndex: 1000,
+    right: 0,
+    left: 0,
+    backgroundColor: colors.green(),
   },
   bar: {
     flexDirection: 'row',
     padding: 10,
     gap: 10,
     alignItems: 'center',
-    backgroundColor: colors.white(),
-    borderRadius: 5,
+    backgroundColor: colors.grey(0.30),
+    borderRadius: 10,
     flex: 1,
   },
   placeholder: {
     fontSize: 14,
     fontFamily: fontType['Pjs-Medium'],
-    color: colors.grey(0.5),
+    color: colors.black(),
     lineHeight: 18,
   },
 });
 const recent = StyleSheet.create({
   button: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     paddingVertical: 10,
-    borderColor: colors.white(),
-    borderWidth: 1,
-    backgroundColor: colors.white(),
-    
   },
   label: {
     fontSize: 12,
@@ -117,5 +130,14 @@ const recent = StyleSheet.create({
     color: colors.black(),
     paddingVertical: 5,
     paddingHorizontal: 24,
+  },
+  container:{
+    position: 'absolute',
+    backgroundColor: colors.white(),
+    zIndex: 999,
+    top: 52,
+    left: 0,
+    right: 0,
+    elevation: 1000,
   },
 });
