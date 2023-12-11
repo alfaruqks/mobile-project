@@ -10,7 +10,6 @@ const Bookmark = () => {
       <View style={styles.header}>
         <Text style={styles.title}>Mari Menulis</Text>
         <ArrowRight color={colors.black()} variant="Linear" size={24}/>
-        
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{paddingHorizontal:50, gap:15, paddingVertical:20}}>
