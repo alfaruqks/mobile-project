@@ -80,10 +80,10 @@ const itemHorizontal = StyleSheet.create({
     padding: 15,
   },
   cardInfo: {
-    // justifyContent: 'flex-end',
-    // height: '90%',
-    // gap: 10,
-    // maxWidth: '60%',
+     justifyContent: 'flex-end',
+     height: '90%',
+     gap: 10,
+     maxWidth: '60%',
   },
   cardTitle: {
     fontFamily: fontType['Pjs-Bold'],
